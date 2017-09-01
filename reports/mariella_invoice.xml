@@ -4,8 +4,9 @@
         <report id="report_mariella_invoice" model="account.invoice" string="Mariella Padilla" report_type="qweb-pdf" name="odoo_custom_invoices.report_invoice_mariella" file="odoo_custom_invoices.report_invoice_mariella" />
         <template id="odoo_custom_invoices.report_invoice_mariella">
             <t t-call="report.html_container">
-                <t t-foreach="doc_ids" t-as="doc_id">
-                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'odoo_custom_invoices.report_invoice_mariella_document')"/></t>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="odoo_custom_invoices.report_invoice_mariella_document" t-lang="o.partner_id.lang"/>
+                </t>
             </t>
         </template>
         <template id="odoo_custom_invoices.report_invoice_mariella_document">
