@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <report id="report_berny_invoice" model="account.invoice" string="Berny Delgado" report_type="qweb-pdf" name="odoo_custom_invoices.report_invoice_berny" file="odoo_custom_invoices.report_invoice_berny" />
+        <template id="odoo_custom_invoices.report_invoice_berny">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'odoo_custom_invoices.report_invoice_berny_document')"/></t>
+            </t>
+        </template>
+        <template id="odoo_custom_invoices.report_invoice_berny_document">
+<t t-name="account.report_invoice_document_3">
+    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+    <div class="header">
+        <table style="width:100%">
+            <tr>
+                <td style="vertical-align: middle;">
+                    <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 150px;" />
+                </td>
+                <td style="vertical-align: middle;">
+                    <span class="title">
+                        <t t-esc="o.company_id.name"/>
+                    </span>
+                    <br/>                  Cédula:                                                                                                                         
+                    <t t-esc="o.company_id.vat"/>
+                    <br/>
+                    <t t-if="o.company_id.street" t-esc="o.company_id.street"/>
+                    <br/>
+                    <span>Tel.</span>
+                    <t t-esc="o.company_id.phone"/>
+                    <br/>
+                    <span>Email:</span>
+                    <t t-esc="o.company_id.email"/>
+                    <br/>
+                    <t t-esc="o.company_id.website"/>
+                    <br/>
+                    <br/>
+                </td>
+                <td style="width:25%" class="text-center">
+                    <div class="i-number pull-right">
+                        <div class="i-number-header ">
+                            <span style="color:#FFF;font-size:22px" t-if="o.amount_total &gt;= 0 and not o.type == 'out_refund'">Factura</span>
+                        </div>
+                        <div class="i-number-body">
+                            <span style="color:#FF0000;font-weight:bolder;font-size:18px">No.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                <span style="color:red;" t-esc="o.number or '00001'"/></span>
+                        </div>
+                    </div>
+                    <div class="i-number pull-right">
+                        <div class="i-number-header ">
+                            <span style="color:#FFF;font-size:22px" t-if="o.amount_total &gt;= 0 and not o.type == 'out_refund'">Fecha</span>
+                        </div>
+                        <div class="i-number-body" style="color:#000;font-weight:bolder;font-size:18px">
+                            <span t-esc="o.date_invoice and (o.date_invoice[8:10]) or ''"/> /                                                                                                                                                                                                                                                                                                                     
+                            <span t-esc="o.date_invoice and (o.date_invoice[5:7]) or ''"/> /                                                                                                                                                                                                                                                                                                                     
+                            <span t-esc="o.date_invoice and (o.date_invoice[0:4]) or ''"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <style>
+            .i-number{
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .i-number-body{
+                border: 1px solid #154ED1;
+            }
+            .i-number-header{
+                background: #154ED1;
+                color: white;
+            }
+        </style>
+    </div>
+    <div class="page">
+        <div class="pad-top-botm client-info">
+            <div class="col-sm-12 customer-info" t-if="o.partner_id.name">
+                <strong style="color: #154ED1;">Cliente:</strong>
+                <strong t-field="o.partner_id.name"></strong>
+                <br/>
+                <strong style="color: #154ED1;">Dirección:</strong>
+                <strong t-field="o.partner_id.street"></strong>
+            </div>
+        </div>
+        <div>
+            <table class="table table-striped table-bordered top-table">
+                <thead>
+                    <tr>
+                        <th >Condiciones de pago</th>
+                        <th >Vendedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td style="width:50%">
+                            <span t-field="o.payment_term_id.name"/>
+                        </td>
+                        <td style="width:50%">
+                            <span t-field="o.user_id.name"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered product-table">
+                        <thead>
+                            <tr>
+                                <th >Cantidad</th>
+                                <th >Descripción</th>
+                                <th >Precio unitario</th>
+                                <th >Descuento</th>
+                                <th >Impuestos</th>
+                                <th >Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                <td class="text-right">
+                                    <span t-field="l.quantity"/>
+                                    <span t-field="l.uom_id" groups="product.group_uom"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.name"/>
+                                </td>
+                                <td class="hidden">
+                                    <span t-field="l.origin"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.price_unit"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.discount"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.invoice_line_tax_ids))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.price_subtotal"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+                <div class="ttl-amts">
+                    <h5>Subtotal:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                        <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                    </h5>
+                </div>
+                <hr />
+                <div class="ttl-amts">
+                    <h5>Impuestos:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                        <span t-field="o.amount_tax" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                    </h5>
+                </div>
+                <hr />
+                <div class="ttl-amts">
+                    <h5>Descuento:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                        <span t-esc="'{0:,.2f}'.format(int(sum([ (line.quantity*line.price_unit-line.price_subtotal) for line in o.invoice_line_ids ])))"/>
+                        <span t-field="o.currency_id.symbol" />
+                    </h5>
+                </div>
+                <hr />
+                <div class="ttl-amts">
+                    <h4>
+                        <strong>Total :                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                            <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                        </strong>
+                    </h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <strong> AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </strong>
+                <br/>
+                <br/>
+                <br/>
+                <div>
+                    <strong> DEPOSITOS </strong>
+                    <br/>
+                        Banco de Costa Rica
+                    
+                    <br/>
+                        Nº 482-0002497-0
+                    
+                    <br/>
+                        15202482000249701
+                                
+                </div>
+            </div>
+        </div>
+        <style>
+            .ttl-amts {
+            text-align:right;
+            padding-right:50px;
+            }
+            .product-table{
+                height:400px
+            }
+            .top-table{
+            }
+            .customer-info{
+                border: 1px solid #154ED1;
+                margin-bottom: 8px;
+                font-size: 18px;
+            }
+            thead{
+                background: #154ED1;
+                color: white;
+            }
+        </style>
+    </div>
+</t>
+
+
+
+        </template>
+    </data>
+</odoo>

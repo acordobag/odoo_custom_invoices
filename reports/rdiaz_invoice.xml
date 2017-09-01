@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <report id="report_rdiaz_invoice" model="account.invoice" string="Remodelaciones Diaz" report_type="qweb-pdf" name="odoo_custom_invoices.report_invoice_rdiaz" file="odoo_custom_invoices.report_invoice_rdiaz" />
+        <template id="odoo_custom_invoices.report_invoice_rdiaz">
+            <t t-call="report.html_container">
+                <t t-foreach="doc_ids" t-as="doc_id">
+                    <t t-raw="translate_doc(doc_id, doc_model, 'partner_id.lang', 'odoo_custom_invoices.report_invoice_rdiaz_document')"/></t>
+            </t>
+        </template>
+        <template id="odoo_custom_invoices.report_invoice_rdiaz_document">
+<t t-name="odoo_custom_invoices.report_invoice_rdiaz_document">
+    <div class="header">
+        <div class="text-center">
+            <br/>
+            <img style="max-height: 70px; margin-bottom:10px" t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo"/>
+            <br/>
+            <br/>
+        </div>
+        <table style="width:100%">
+            <tr class="main">
+                <td style="width:33%" class="text-center">
+                    <h4>Cliente: </h4>
+                    <address >
+                        <p t-esc="o.partner_id.name"></p>
+                    </address>
+                </td>
+                <td style="width:33%" class="text-center">
+                    <span class="title">
+                        <t t-esc="o.company_id.company_registry"/>
+                    </span>
+                    <br/>                  Cédula Jurídica                                                                                                                                                                                                                                                                         
+                    <t t-esc="o.company_id.vat"/>
+                    <br/>
+                    <t t-if="o.company_id.street" t-esc="o.company_id.street"/>
+                    <br/>
+                    <span>Tel.</span>
+                    <t t-esc="o.company_id.phone"/>
+                    <br/>
+                    <span>Email:</span>
+                    <t t-esc="o.company_id.email"/>
+                    <br/>
+                    <t t-esc="o.company_id.website"/>
+                    <br/>
+                    <br/>
+                </td>
+                <td style="width:33%" class="text-center">
+                    <table class="meta">
+                        <tr>
+                            <th>
+                                <span >Factura #</span>
+                            </th>
+                            <td>
+                                <span t-esc="o.number or '00001'"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span >Fecha</span>
+                            </th>
+                            <td>
+                                <span t-esc="o.date_invoice"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span >Pago</span>
+                            </th>
+                            <td>
+                                <span t-esc="o.payment_term_id.name or ''"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <style>
+    .main > td {border: none;}
+    .meta { font-size: 75%; table-layout: fixed; width: 100%; }
+    .meta { border-collapse: separate; border-spacing: 2px; }
+    .meta th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+    .meta th, td { border-radius: 0.25em; border-style: solid; }
+    .meta th { background: #f4e542; border-color: #BBB; }
+    .meta td { border-color: #DDD; }
+    .meta:after{ clear: both; content: ""; display: table; }
+
+    .meta th { width: 40%; }
+    .meta td { width: 60%; }
+
+    </style>
+    </div>
+    <div class="page">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <article>
+            <table class="inventory product-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <span >Descripción</span>
+                        </th>
+                        <th>
+                            <span >Precio Unitario</span>
+                        </th>
+                        <th>
+                            <span >Cantidad</span>
+                        </th>
+                        <th>
+                            <span >Descuento</span>
+                        </th>
+                        <th>
+                            <span >Impuestos</span>
+                        </th>
+                        <th>
+                            <span >Total</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                        <td>
+                            <a class="cut">-</a>
+                            <span t-field="l.name"/>
+                        </td>
+                        <td>
+                            <span t-field="l.price_unit"/>
+                        </td>
+                        <td>
+                            <span t-field="l.quantity"/>
+                        </td>
+                        <td>
+                            <span t-field="l.discount"/>
+                        </td>
+                        <td>
+                            <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.invoice_line_tax_ids))"/>
+                        </td>
+                        <td>
+                            <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="balance">
+                <tr>
+                    <th>
+                        <span >Subtotal</span>
+                    </th>
+                    <td>
+                        <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <span >Impuestos</span>
+                    </th>
+                    <td>
+                        <span t-esc="'{0:,.2f}'.format(int(sum([ (line.quantity*line.price_unit-line.price_subtotal) for line in o.invoice_line_ids ])))"/>
+                        <span t-field="o.currency_id.symbol" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <span >Total</span>
+                    </th>
+                    <td>
+                        <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                    </td>
+                </tr>
+            </table>
+        </article>
+        <hr/>
+        <aside>
+            <div class="hacienda">
+                <p>AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D.</p>
+            </div>
+        </aside>
+        <hr/>
+        <div class="bank-info">
+            <h1>CUENTAS BANCARIAS</h1>
+            <hr/>
+            <p>BANCO NACIONAL DE COSTA RICA:                 
+                <strong>200 01 247 001876 6</strong>
+            </p>
+            <p>BANCO DE COSTA RICA:                 
+                <strong>001 0857138 4</strong>
+            </p>
+            <hr/>
+        </div>
+        <style>
+
+
+    h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+
+                    .product-table{
+                        height:400px
+                    }
+
+    table { font-size: 75%; table-layout: fixed; width: 100%; }
+    table { border-collapse: separate; border-spacing: 2px; }
+    th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+    th, td { border-radius: 0.25em; border-style: solid; }
+    th { background: #f4e542; border-color: #BBB; }
+    td { border-color: #DDD; }
+    .hacienda{ font-size: 10px; font-weight: bold; }
+
+    header { margin: 0 0 3em; }
+    header:after { clear: both; content: ""; display: table; }
+
+    header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+    header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+    header address p { margin: 0 0 0.25em; }
+    header span, header img { display: block; float: right; }
+    header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+    header img { max-height: 100%; max-width: 100%; }
+    header input { cursor: pointer; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%; }
+
+
+    article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+    article:after { clear: both; content: ""; display: table; }
+    article h1 { clip: rect(0 0 0 0); position: absolute; }
+
+    article address { float: left; font-size: 125%; font-weight: bold; }
+
+
+    table.meta, table.balance { float: right; width: 36%; }
+    table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+    table.balance th, table.balance td { width: 50%; }
+    table.balance td { text-align: right; }
+
+
+    table.balance-left { float: left; width: 36%; }
+    table.balance-left:after { clear: both; content: ""; display: table; }
+    table.balance-left td { width: 50%; }
+    table.balance-left td { text-align: left; }
+
+    table.meta th { width: 40%; }
+    table.meta td { width: 60%; }
+
+
+    table.inventory { clear: both; width: 100%; }
+    table.inventory th { font-weight: bold; text-align: center; }
+
+    table.inventory td:nth-child(1) { width: 26%; }
+    table.inventory td:nth-child(2) { width: 38%; }
+    table.inventory td:nth-child(3) { text-align: right; width: 12%; }
+    table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+    table.inventory td:nth-child(5) { text-align: right; width: 12%; }
+
+
+
+    aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+    aside h1 { border-color: #999; border-bottom-style: solid; }
+
+
+    .cut { opacity: 0; position: absolute; top: 0; left: -1.5em; }
+    .cut { -webkit-transition: opacity 100ms ease-in; }
+
+    tr:hover .cut { opacity: 1; }
+
+                            </style>
+    </div>
+</t>
+        </template>
+    </data>
+</odoo>

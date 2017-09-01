@@ -23,5 +23,8 @@
     # always loaded
     'data': [
         'reports/consurba_invoice.xml',
+        'reports/berny_invoice.xml',
+        'reports/mariella_invoice.xml',
+        'reports/rdiaz_invoice.xml'
     ]
 }
