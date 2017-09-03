@@ -20,11 +20,11 @@
                             <td width="20%">
                                 <div class="text-left">
                                     <h2>
-                                        <span style="color:#000;font-weight:bolder;font-size:22px" t-if="o.type == 'out_invoice'">FACTURA</span>
-                                        <span style="color:#000;font-weight:bolder;font-size:22px" t-if="o.type == 'draft'">PRESUPUESTO</span>
+                                        <span style="color:#000;font-weight:bolder;font-size:22px" t-if="o.type == 'out_invoice' and o.state != 'draft'">FACTURA</span>
+                                        <span style="color:#000;font-weight:bolder;font-size:22px" t-if="o.type == 'out_invoice' and o.state == 'draft'">PRESUPUESTO</span>
                                         <span style="color:#FF0000;font-weight:bolder;font-size:20px" t-if="o.amount_total &lt; 0 or o.type == 'out_refund'">NOTA CRÉDITO</span>
                                         <br/>
-                                        <span t-if="o.type == 'out_invoice'" style="color:#FF0000;font-weight:bolder;font-size:20px">No.                                                                                                                         
+                                        <span t-if="o.type == 'out_invoice' and o.state != 'draft'" style="color:#FF0000;font-weight:bolder;font-size:20px">No.                                                                                                                         
                                             <span style="color:red;" t-esc="o.number or '00001'"/></span>
                                     </h2>
                                 </div>
@@ -258,7 +258,7 @@
                     </div>
                     <!--End tbl-wrapped-->
                     <div class="row">
-                        <div class="col-xs-6" t-if="o.type == 'out_invoice'">
+                        <div class="col-xs-6" t-if="o.type == 'out_invoice' and o.state != 'draft'">
                             <p style="font-family:Helvetica;padding:2px 2px 2px 2px;font-weight:bolder;font-size:9px!important">AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </p>
                         </div>
                         <div class="col-xs-6">
@@ -269,7 +269,7 @@
                         </div>
                     </div>
                     <div class="boxsq1">
-                        <span style="font-family:Helvetica;font-size:10px;text-align:justify;" t-if="o.type == 'out_invoice'">
+                        <span style="font-family:Helvetica;font-size:10px;text-align:justify;" t-if="o.type == 'out_invoice' and o.state != 'draft'">
            Esta factura constituye título ejecutivo, de acuerdo con las disposiciones del artículo 460 del código de comercio vigente.
            No se aceptan devoluciones de mercadería en descuento. Cambios de mercadería se aceptan únicamente dentro de los siguientes 7 días hábiles, en sus empaques originales con todas las etiquetas puestas y en buen estado. No se hacen devoluciones de dinero sino crédito de tienda únicamente. Al cancelar esta factura, el/la cliente(a) acepta expresamente las condiciones de la venta anteriormente descritas.
            </span>
