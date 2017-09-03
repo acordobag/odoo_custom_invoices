@@ -20,7 +20,7 @@
                 </td>
                 <td style="vertical-align: middle;">
                     <span class="title">
-                        <t t-esc="o.company_id.name"/>
+                        <t t-esc="o.company_id.company_registry"/>
                     </span>
                     <br/>                  Cédula:                                                                                                                         
                     <t t-esc="o.company_id.vat"/>
