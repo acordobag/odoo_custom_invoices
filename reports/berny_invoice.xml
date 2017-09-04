@@ -177,8 +177,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12" t-if="o.type == 'out_invoice' and o.state != 'draft'">
-                <strong> AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </strong>
+            <div class="col-lg-12 col-md-12 col-sm-12" >
+                <strong t-if="o.type == 'out_invoice' and o.state != 'draft'"> AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </strong>
                 <br/>
                 <br/>
                 <br/>
