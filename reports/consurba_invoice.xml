@@ -15,7 +15,7 @@
                     <table style="width:100%" class="mt32 mb35 table-condensed">
                         <tr>
                             <td width="80%">
-                                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height:150px;"/>
+                                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height:170px;"/>
                             </td>
                             <td width="20%">
                                 <div class="text-left">
