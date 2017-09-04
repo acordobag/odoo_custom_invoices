@@ -16,9 +16,10 @@
         <table style="width:100%">
             <tr>
                 <td style="vertical-align: middle;">
-                    <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 150px;" />
+                    <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 190px;" />
                 </td>
                 <td style="vertical-align: middle;">
+                <br/>
                     <span class="title">
                         <t t-esc="o.company_id.company_registry"/>
                     </span>
@@ -76,6 +77,9 @@
         </style>
     </div>
     <div class="page">
+    <br/>
+    <br/>
+    <br/>
         <div class="pad-top-botm client-info">
             <div class="col-sm-12 customer-info" t-if="o.partner_id.name">
                 <strong style="color: #154ED1;">Cliente:</strong>

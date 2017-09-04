@@ -16,7 +16,7 @@
     <div class="header">
         <div class="row">
             <div class="col-xs-3">
-                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 100px;"/>
+                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 170px;"/>
             </div>
         </div>
         <div class="row zero_min_height">
@@ -25,6 +25,8 @@
         </div>
     </div>
     <div class="page">
+    <br/>
+    <br/>
         <table class="table-condensed" style="width:100%">
             <tr>
                 <td style="width:50%">
