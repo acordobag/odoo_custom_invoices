@@ -49,10 +49,12 @@
                     <table class="meta">
                         <tr>
                             <th>
-                                <span >Factura #</span>
+                                <span t-if="o.type == 'out_invoice' and o.state != 'draft'">Factura #</span>
+                                <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Proforma</span>
                             </th>
                             <td>
-                                <span t-esc="o.number or '00001'"/>
+                                <span t-esc="o.number or '00001'" t-if="o.type == 'out_invoice' and o.state != 'draft'"/>
+                                <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Proforma</span>
                             </td>
                         </tr>
                         <tr>
@@ -174,7 +176,7 @@
         </article>
         <hr/>
         <aside>
-            <div class="hacienda">
+            <div class="hacienda" t-if="o.type == 'out_invoice' and o.state != 'draft'">
                 <p>AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D.</p>
             </div>
         </aside>

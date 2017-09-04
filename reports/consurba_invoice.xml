@@ -257,8 +257,8 @@
                         </table>
                     </div>
                     <!--End tbl-wrapped-->
-                    <div class="row">
-                        <div class="col-xs-6" t-if="o.type == 'out_invoice' and o.state != 'draft'">
+                    <div class="row" t-if="o.type == 'out_invoice' and o.state != 'draft'">
+                        <div class="col-xs-6">
                             <p style="font-family:Helvetica;padding:2px 2px 2px 2px;font-weight:bolder;font-size:9px!important">AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </p>
                         </div>
                         <div class="col-xs-6">

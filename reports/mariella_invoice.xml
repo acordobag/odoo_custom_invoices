@@ -48,14 +48,14 @@
                 </td>
                 <td style="width:50%;" class="text-right">
                     <h3>
-                        <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">Factura</span>
+                        <span t-if="o.type == 'out_invoice' and o.state != 'draft'">Factura</span>
                         <span t-if="o.type == 'out_invoice' and o.state == 'proforma2'">PRO-FORMA</span>
-                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
+                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Presupuesto</span>
                         <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
                         <span t-if="o.type == 'out_refund'">Refund</span>
                         <span t-if="o.type == 'in_refund'">Vendor Refund</span>
                         <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
-                        <span t-field="o.number"/>
+                        <span t-field="o.number" t-if="o.type == 'out_invoice' and o.state != 'draft'"/>
                     </h3>
                 </td>
             </tr>
@@ -121,7 +121,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="hacienda">
+        <div class="hacienda" t-if="o.type == 'out_invoice' and o.state != 'draft'">
             <p>AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D.</p>
         </div>
         <div class="row">

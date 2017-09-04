@@ -40,9 +40,10 @@
                 <td style="width:25%" class="text-center">
                     <div class="i-number pull-right">
                         <div class="i-number-header ">
-                            <span style="color:#FFF;font-size:22px" t-if="o.amount_total &gt;= 0 and not o.type == 'out_refund'">Factura</span>
+                            <span style="color:#FFF;font-size:22px" t-if="o.type == 'out_invoice' and o.state != 'draft'">Factura</span>
+                            <span style="color:#FFF;font-size:22px" t-if="o.type == 'out_invoice' and o.state == 'draft'">Cotización</span>
                         </div>
-                        <div class="i-number-body">
+                        <div class="i-number-body" t-if="o.type == 'out_invoice' and o.state != 'draft'">
                             <span style="color:#FF0000;font-weight:bolder;font-size:18px">No.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                 <span style="color:red;" t-esc="o.number or '00001'"/></span>
                         </div>
@@ -176,7 +177,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-sm-12" t-if="o.type == 'out_invoice' and o.state != 'draft'">
                 <strong> AUTORIZADO MEDIANTE OFICIO No.01-0068-97 DEL 26-09-97 DE LA D.G.T.D. </strong>
                 <br/>
                 <br/>
